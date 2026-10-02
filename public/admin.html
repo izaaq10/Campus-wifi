@@ -1,164 +1,278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Purchase Monitor</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Purchase Monitor</title>
 
-  <!-- Font: Outfit (falls back to system font if offline) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font: Outfit (falls back to system font if offline) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="admin-page">
-  <div class="admin-layout">
-
-    <!-- ================= SIDEBAR (messages live here) ================= -->
-    <aside class="sidebar">
-      <div class="brand">
-        <span class="brand-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-        </span>
-        <span>Campus WiFi<small>Admin console</small></span>
-      </div>
-
-      <div class="status" id="connection-status">Connecting...</div>
-
-      <!-- Predefined Messages Section -->
-      <div class="message-panel">
-        <h3>Send Message to Students</h3>
-        <p class="hint">Goes instantly to every student who has the page open</p>
-
-        <div class="message-buttons">
-          <button onclick="sendMessage('Your voucher is ready. Please check your screen.')">
-            <span class="msg-icon green">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
-            </span>
-            <span class="msg-text">
-              <strong>Voucher Ready</strong>
-              <small>Your voucher is ready. Please check your screen.</small>
-            </span>
-          </button>
-
-          <button onclick="sendMessage('Please wait 5 minutes while we activate your package.')">
-            <span class="msg-icon orange">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </span>
-            <span class="msg-text">
-              <strong>Please Wait 5 min</strong>
-              <small>Please wait 5 minutes while we activate your package.</small>
-            </span>
-          </button>
-
-          <button onclick="sendMessage('If you face any issue, contact support at wifi@school.edu')">
-            <span class="msg-icon sky">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-            </span>
-            <span class="msg-text">
-              <strong>Contact Support</strong>
-              <small>If you face any issue, contact support at wifi@school.edu</small>
-            </span>
-          </button>
-
-          <button onclick="sendMessage('Thank you for purchasing! Enjoy your internet.')">
-            <span class="msg-icon green">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </span>
-            <span class="msg-text">
-              <strong>Thank You</strong>
-              <small>Thank you for purchasing! Enjoy your internet.</small>
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <!-- <p class="sidebar-foot">Messages appear as pop-ups on the student page for 12 seconds.</p> -->
-    </aside>
-
-    <!-- ================= MAIN AREA (purchases table) ================= -->
-    <main class="main">
-      <header class="main-header">
-        <h1>Admin Dashboard</h1>
-        <!-- <p>Live purchases + ability to send messages to students</p> -->
-      </header>
-
-      <section class="table-card">
-        <div class="table-card-head">
-          <h2>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Purchases
-          </h2>
-          <span class="legend">New purchases flash green</span>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="admin-page">
+    <div class="admin-layout">
+      <!-- ================= SIDEBAR (messages live here) ================= -->
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+              <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+              <line x1="12" y1="20" x2="12.01" y2="20" />
+            </svg>
+          </span>
+          <span>Izaaq's WiFi<small>Admin console</small></span>
         </div>
 
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Student Name</th>
-                <th>Student ID</th>
-                <th>Package</th>
-                <th>Price</th>
-                <th>Voucher</th>
-              </tr>
-            </thead>
-            <tbody id="purchases-body"><!-- Filled by JavaScript --></tbody>
-          </table>
+        <div class="status" id="connection-status">Connecting...</div>
 
-          <!-- Shown automatically (by CSS) while there are no purchases -->
-          <div class="empty-state">
-            <span class="empty-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-            </span>
-            <strong>No purchases yet</strong>
-            <span>Open the student page and buy a package. It will show up here instantly.</span>
+        <!-- Predefined Messages Section -->
+        <div class="message-panel">
+          <h3>Send Message to Students</h3>
+          <p class="hint">
+            Goes instantly to every student who has the page open
+          </p>
+
+          <div class="message-buttons">
+            <button
+              onclick="
+                sendMessage('Your voucher is ready. Please check your screen.')
+              "
+            >
+              <span class="msg-icon green">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"
+                  />
+                  <path d="M13 5v2" />
+                  <path d="M13 17v2" />
+                  <path d="M13 11v2" />
+                </svg>
+              </span>
+              <span class="msg-text">
+                <strong>Voucher Ready</strong>
+                <small>Your voucher is ready. Please check your screen.</small>
+              </span>
+            </button>
+
+            <button
+              onclick="
+                sendMessage(
+                  'Please wait 5 minutes while we activate your package.',
+                )
+              "
+            >
+              <span class="msg-icon orange">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </span>
+              <span class="msg-text">
+                <strong>Please Wait 5 min</strong>
+                <small
+                  >Please wait 5 minutes while we activate your package.</small
+                >
+              </span>
+            </button>
+
+            <button
+              onclick="
+                sendMessage(
+                  'If you face any issue, contact support at wifi@school.edu',
+                )
+              "
+            >
+              <span class="msg-icon sky">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                  <path
+                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+                  />
+                </svg>
+              </span>
+              <span class="msg-text">
+                <strong>Contact Support</strong>
+                <small
+                  >If you face any issue, contact support at
+                  wifi@school.edu</small
+                >
+              </span>
+            </button>
+
+            <button
+              onclick="
+                sendMessage('Thank you for purchasing! Enjoy your internet.')
+              "
+            >
+              <span class="msg-icon green">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </span>
+              <span class="msg-text">
+                <strong>Thank You</strong>
+                <small>Thank you for purchasing! Enjoy your internet.</small>
+              </span>
+            </button>
           </div>
         </div>
-      </section>
-    </main>
-  </div>
 
-  <script>
-    const tbody = document.getElementById('purchases-body');
-    const statusEl = document.getElementById('connection-status');
+        <!-- <p class="sidebar-foot">Messages appear as pop-ups on the student page for 12 seconds.</p> -->
+      </aside>
 
-    // Connect to WebSocket
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socket = new WebSocket(`${protocol}//${window.location.host}`);
+      <!-- ================= MAIN AREA (purchases table) ================= -->
+      <main class="main">
+        <header class="main-header">
+          <h1>Admin Dashboard</h1>
+          <!-- <p>Live purchases + ability to send messages to students</p> -->
+        </header>
 
-    socket.onopen = () => {
-      statusEl.textContent = "Live – Connected to server";
-      statusEl.className = "status connected";
-    };
+        <section class="table-card">
+          <div class="table-card-head">
+            <h2>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+              Purchases
+            </h2>
+            <span class="legend">New purchases flash green</span>
+          </div>
 
-    socket.onclose = () => {
-      statusEl.textContent = "Disconnected – Refresh the page";
-      statusEl.className = "status disconnected";
-    };
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Package</th>
+                  <th>Price</th>
+                  <th>Voucher</th>
+                </tr>
+              </thead>
+              <tbody id="purchases-body">
+                <!-- Filled by JavaScript -->
+              </tbody>
+            </table>
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+            <!-- Shown automatically (by CSS) while there are no purchases -->
+            <div class="empty-state">
+              <span class="empty-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                  <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                  <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                  <line x1="12" y1="20" x2="12.01" y2="20" />
+                </svg>
+              </span>
+              <strong>No purchases yet</strong>
+              <span
+                >Open the student page and buy a package. It will show up here
+                instantly.</span
+              >
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
 
-      if (data.type === "NEW_PURCHASE") {
-        addPurchaseRow(data.purchase, true);
+    <script>
+      const tbody = document.getElementById("purchases-body");
+      const statusEl = document.getElementById("connection-status");
+
+      // Connect to WebSocket
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const socket = new WebSocket(`${protocol}//${window.location.host}`);
+
+      socket.onopen = () => {
+        statusEl.textContent = "Live – Connected to server";
+        statusEl.className = "status connected";
+      };
+
+      socket.onclose = () => {
+        statusEl.textContent = "Disconnected – Refresh the page";
+        statusEl.className = "status disconnected";
+      };
+
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "NEW_PURCHASE") {
+          addPurchaseRow(data.purchase, true);
+        }
+      };
+
+      // Load existing purchases when page opens
+      async function loadExistingPurchases() {
+        const res = await fetch("/api/purchases");
+        const purchases = await res.json();
+        purchases.forEach((p) => addPurchaseRow(p));
       }
-    };
 
-    // Load existing purchases when page opens
-    async function loadExistingPurchases() {
-      const res = await fetch('/api/purchases');
-      const purchases = await res.json();
-      purchases.forEach(p => addPurchaseRow(p));
-    }
+      function addPurchaseRow(purchase, isNew = false) {
+        const row = document.createElement("tr");
+        if (isNew) row.classList.add("new-row");
 
-    function addPurchaseRow(purchase, isNew = false) {
-      const row = document.createElement('tr');
-      if (isNew) row.classList.add('new-row');
-
-      row.innerHTML = `
+        row.innerHTML = `
         <td>${purchase.purchasedAt}</td>
         <td>${purchase.studentName}</td>
         <td>${purchase.studentId}</td>
@@ -167,28 +281,30 @@
         <td><strong>${purchase.voucher}</strong></td>
       `;
 
-      tbody.insertBefore(row, tbody.firstChild);
+        tbody.insertBefore(row, tbody.firstChild);
 
-      if (isNew) {
-        setTimeout(() => row.classList.remove('new-row'), 3000);
+        if (isNew) {
+          setTimeout(() => row.classList.remove("new-row"), 3000);
+        }
       }
-    }
 
-    // Send a predefined message to all connected students
-    function sendMessage(message) {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
-          type: "ADMIN_MESSAGE",
-          message: message
-        }));
-        alert("Message sent to students!");
-      } else {
-        alert("Not connected to server");
+      // Send a predefined message to all connected students
+      function sendMessage(message) {
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(
+            JSON.stringify({
+              type: "ADMIN_MESSAGE",
+              message: message,
+            }),
+          );
+          alert("Message sent to students!");
+        } else {
+          alert("Not connected to server");
+        }
       }
-    }
 
-    // Start
-    loadExistingPurchases();
-  </script>
-</body>
+      // Start
+      loadExistingPurchases();
+    </script>
+  </body>
 </html>
